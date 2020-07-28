@@ -138,6 +138,23 @@ void GCS_MAVLINK_Plane::send_attitude() const
         omega.x,
         omega.y,
         omega.z);
+		
+    Quaternion quat;
+    quaternion ahrs.get_quat_body_to_ned(quat);
+    
+    float ref[] = {1.0, 0.0, 0.0, 0.0};
+    
+    mavlink_msg_attitude_quaternion_send(
+        chan,
+        millis(),
+        quat.q1,
+        quat.q2,
+        quat.q3,
+        quat.q4,
+        omega.x,
+        omega.y,
+        omega.z,
+        ref);
 }
 
 void GCS_MAVLINK_Plane::send_aoa_ssa()
